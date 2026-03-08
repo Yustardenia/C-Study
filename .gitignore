@@ -2,5 +2,6 @@ bin/
 obj/
 .idea/
 .vs/
+.playwright-cli/
 *.user
 *.suo
