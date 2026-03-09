@@ -1,40 +1,55 @@
-public class Solution
-{
-    public string LongestPalindrome(string s)
+using System.Text;
+
+public class Solution {
+    public int MyAtoi(string s)
     {
-        int length = s.Length;
-        if (length < 2)
+        int ans = 0;
+        bool isPos = true;
+        bool isFirst = true;
+        int x = 0;
+        foreach (var c in s)
         {
-            return s;
-        }
-
-        int max = 1;
-        int mL = 0;
-        int mR = 0;
-
-        for (int now = 0; now < length; now++)
-        {
-            Expand(s, now, now, ref max, ref mL, ref mR);
-            Expand(s, now, now + 1, ref max, ref mL, ref mR);
-        }
-
-        return s.Substring(mL, mR - mL + 1);
-    }
-
-    private void Expand(string s, int left, int right, ref int max, ref int mL, ref int mR)
-    {
-        while (left >= 0 && right < s.Length && s[left] == s[right])
-        {
-            int len = right - left + 1;
-            if (len > max)
+            if (c == ' ' && isFirst)
             {
-                max = len;
-                mL = left;
-                mR = right;
+                continue;
             }
 
-            left--;
-            right++;
+            if (c == '+' && isFirst)
+            {
+                isFirst = false;
+                continue;
+            }
+
+            if (c == '-' && isFirst)
+            {
+                isPos = false;
+                isFirst = false;
+                continue;
+            }
+
+            if (c > '9' || c < '0')
+            {
+                break;
+            }
+
+            else
+            {
+                x = Int32.Parse(c.ToString());
+                isFirst = false;
+            }
+            if (ans > Int32.MaxValue / 10 ||(ans == Int32.MaxValue / 10 && x > 7))
+            {
+                return Int32.MaxValue;
+            }
+
+            if (ans < Int32.MinValue / 10 ||(ans == Int32.MinValue / 10 && x > 8))
+            {
+                return Int32.MinValue;
+            }
+
+            ans = ans * 10 + (isPos ? x : -x); 
+            
         }
+        return ans;
     }
 }
